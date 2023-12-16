@@ -4,9 +4,5 @@
        "source": "/(.*)",
         "destination": "/"
       }
-    ],"functions": {
-        "/": {
-          "runtime": "nodejs@20.9.0"
-        }
-      }
+    ]
    }
