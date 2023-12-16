@@ -56,7 +56,7 @@ const swoptions = {
 };
 const specs = swaggerJsdoc(swoptions);
 app.use(
-    "/api-docs",
+    "/api/api-docs",
     swaggerUi.serve,
     swaggerUi.setup(specs)
 );
@@ -71,7 +71,9 @@ app.use(express.json())
 app.use('/api/v1', signupRouter)
 app.use('/api/v1', profileRouter)
 app.use('/api/v1', shortLinksRouter)
-
+app.get('/api/v1', (req, res) => {
+    res.send({ message: 'Welcome to divsly!' });
+  });
 
 
 app.listen(port, () => {
