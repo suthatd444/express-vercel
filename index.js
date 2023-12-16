@@ -55,11 +55,7 @@ const swoptions = {
     apis: ["./routes/*.js"],
 };
 const specs = swaggerJsdoc(swoptions);
-app.use(
-    "/api/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(specs)
-);
+
 
 app.use(cors());
 //For Devlopement only
@@ -68,10 +64,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.json())
+app.use(express.static('public'))
+app.use(
+    "/api/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs)
+);
 app.use('/api/v1', signupRouter)
 app.use('/api/v1', profileRouter)
 app.use('/api/v1', shortLinksRouter)
-app.get('/api/v1', (req, res) => {
+app.get('/', (req, res) => {
     res.send({ message: 'Welcome to divsly!' });
   });
 
@@ -93,3 +95,5 @@ mongoose.connect(process.env.MONGO_URI, { useUnifiedTopology: true, useNewUrlPar
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
+
+module.exports = app
