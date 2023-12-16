@@ -13,7 +13,7 @@ const profileRouter = require('./routes/profile.routes')
 const shortLinksRouter = require('./routes/shortLinks.routes.js')
 
 
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 // const otpRouter = require('./routes/otp')
 // const roleRouter = require('./routes/role');
 // const policyRouter = require('./routes/policy');
