@@ -5,7 +5,7 @@
         "destination": "/"
       }
     ],"functions": {
-        "api/*": {
+        "/": {
           "runtime": "nodejs@20.9.0"
         }
       }
