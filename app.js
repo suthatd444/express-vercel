@@ -56,7 +56,7 @@ const swoptions = {
 };
 const specs = swaggerJsdoc(swoptions);
 app.use(
-    "/api/v1/api-docs",
+    "/api-docs",
     swaggerUi.serve,
     swaggerUi.setup(specs)
 );
