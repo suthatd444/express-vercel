@@ -84,26 +84,26 @@ app.listen(port, () => {
 
 
 
-const dbConfig = require('./config/database.config.js');
-const mongoose = require('mongoose');
+// const dbConfig = require('./config/database.config.js');
+// const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
-var options = {
-    user: "admin",
-    pass: "Deepak@1407",
-    useNewUrlParser: true,
-    auth: { authSource: 'admin' },
-    // useUnifiedTopology: true,
-    // useFindAndModify: true,
-    useUnifiedTopology: true,
-    //  useCreateIndex: true,
-    // poolSize:5000
-};
+// mongoose.Promise = global.Promise;
+// var options = {
+//     user: "admin",
+//     pass: "Deepak@1407",
+//     useNewUrlParser: true,
+//     auth: { authSource: 'admin' },
+//     // useUnifiedTopology: true,
+//     // useFindAndModify: true,
+//     useUnifiedTopology: true,
+//     //  useCreateIndex: true,
+//     // poolSize:5000
+// };
 
-mongoose.connect(process.env.MONGO_URI, { useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
-    console.log("Connect to the database!");
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    process.exit();
-});
+// mongoose.connect(process.env.MONGO_URI, { useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
+//     console.log("Connect to the database!");
+// }).catch(err => {
+//     console.log('Could not connect to the database. Exiting now...', err);
+//     process.exit();
+// });
 export default app;
