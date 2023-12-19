@@ -27,7 +27,14 @@ const shortLinks = mongoose.model(
     },
     qrCodeImage: {
       type: String,
-      required: true,
+    },
+    isDelete: {
+      type: Boolean,
+      default: false
+    },
+    isActive: {
+      type: Boolean,
+      default: true
     },
     tags: {
       type: String,

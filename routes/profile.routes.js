@@ -16,17 +16,15 @@ const { updateProfile } = require('../controller/profile.controller')
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
- *              
  *               email:
  *                 type: string
  *                 format: email
  *                 description: The email address of the user.
  *                 example: test@example.com
- *             
  *               firstName:
  *                 type: string
  *                 description: The first name of the user.
@@ -43,6 +41,10 @@ const { updateProfile } = require('../controller/profile.controller')
  *                 type: string
  *                 description: The country of the user.
  *                 example: United States
+ *               profileImage:
+ *                 type: string
+ *                 format: binary
+ *                 description: Choose a file for the user's profile image.
  *     responses:
  *       200:
  *         description: Successful profile update
@@ -64,6 +66,6 @@ const { updateProfile } = require('../controller/profile.controller')
  *     description: 'Use the following format: Bearer <token>'
  */
 
-router.post('/updateProfile', auth, multerAny, updateProfile)
+router.post('/updateProfile', auth, updateProfile)
 
 module.exports = router

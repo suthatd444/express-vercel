@@ -21,34 +21,29 @@ const db = require("../db/sqlConnect");
 const saltRounds = 10;
 exports.signup = async (req, res) => {
     try {
+       
         const username = req.body.userName;
         const email = req.body.email;
         const password = req.body.password;
         const repassword = req.body.repassword;
-        // const userType = req.body.userType;
 
-        if (!username) {
-            errorResponse['message'] = 'Please enter valid username';
-            return res.send(errorResponse);
-        }
+     
+        const schema = Joi.object().keys({
+            username: Joi.string().min(6).required(),
+            email: Joi.string()
+                .regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+                .required('email required'),
+            password: Joi.string()
+                .min(8) // Minimum length of 8 characters
+                .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/) // Requires at least one lowercase, one uppercase, one digit, and one special character
+                .message('Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character')
+                .required()
+        });
 
-        // if (!userType) {
-        //   errorResponse['message'] = 'Please enter valid user type';
-        //   return res.send(errorResponse);
-        // }
+        const { error, value } = schema.validate({ username, email, password });
 
-        if (!email) {
-            errorResponse['message'] = 'Please enter valid email.';
-            return res.send(errorResponse);
-        }
-
-        if (!password) {
-            errorResponse['message'] = 'Please enter valid password.';
-            return res.send(errorResponse);
-        }
-
-        if (!repassword) {
-            errorResponse['message'] = 'Please enter valid repassword.';
+        if (error) {
+            errorResponse['message'] = error.details[0].message;
             return res.send(errorResponse);
         }
 
@@ -72,6 +67,7 @@ exports.signup = async (req, res) => {
                 password: md5(password),
             };
 
+        
             const user = new User(userObject);
             let data = await user.save();
             let token = jwt.sign({ user_id: data._id, email: data.email }, process.env.TOKEN_SECRET, { expiresIn: "7d" });
@@ -99,9 +95,22 @@ exports.signup = async (req, res) => {
  */
 exports.login = async (req, res) => {
     try {
-      
         const email = req.body.email;
         const password = req.body.password;
+
+        const schema = Joi.object().keys({
+            email: Joi.string()
+                .regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+                .required('email required'),
+            password: Joi.string().required('password required')
+        });
+
+        const { error, value } = schema.validate({ email, password });
+
+        if (error) {
+            errorResponse['message'] = error.details[0].message;
+            return res.send(errorResponse);
+        }
 
         let user = await User.findOne({
             email: email,

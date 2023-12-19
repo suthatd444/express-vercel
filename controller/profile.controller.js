@@ -1,34 +1,36 @@
 const User = require('../models/user.model');
 const { successResponse, errorResponse } = require('../helpers/common.helper');
+const Joi = require('joi');
 
 const util = require("util");
 const multer = require("multer");
+const fs = require('fs');
+
 var path = require("path");
 __dirname = path.resolve();
 
-const maxSize = 10 * 1024 * 1024 * 1024; //10 GB
+const uploadFolder = '/uploads/profile/';
+// Ensure the upload folder exists
+// if (!fs.existsSync(uploadFolder)) {
+//     fs.mkdirSync(uploadFolder, { recursive: true });
+// }
 
-/*******************PAN CARD UPLOAD */
-let documentsStorage = multer.diskStorage({
+// Set up Multer middleware
+const storage = multer.diskStorage({
+
     destination: (req, file, cb) => {
-        cb(null, __dirname + "/uploads/profile");
+        console.log('__dirname + uploadFolder', __dirname + uploadFolder);
+        cb(null, __dirname + uploadFolder);
     },
-    filename: (req, file, cb) => {
 
-        cb(null, Date.now() + '-profile' + path.extname(file.originalname));
-    },
+    filename: function (req, file, cb) {
+        // Customize the filename
+        const uniqueFilename = `${Date.now()}-${file.originalname}`;
+        cb(null, uniqueFilename);
+    }
 });
 
-let uploadDocuments = multer({
-    storage: documentsStorage,
-    limits: { fileSize: maxSize },
-    //     fileFilter(req,file,cb){
-    //         if(!file.originalname.match(/\.(png:jpg:jpeg)$/)){
-    //             return cb(new Error('Please upload an image file!'))
-    //         }
-    // }
-}).fields([{ name: 'profileImage', maxCount: 1 }]);
-
+const uploadDocuments = multer({ storage: storage }).single('profileImage');
 let uploadDocumentsMiddleware = util.promisify(uploadDocuments);
 
 exports.updateProfile = async (req, res) => {
@@ -39,6 +41,7 @@ exports.updateProfile = async (req, res) => {
             errorResponse['message'] = err.message;
             return res.send(errorResponse);
         });
+
         let userId = req.user_id;
 
         let firstName = req.body.firstName;
@@ -46,23 +49,20 @@ exports.updateProfile = async (req, res) => {
         let mobile = req.body.mobile;
         let country = req.body.country;
 
-        if (!firstName) {
-            errorResponse['message'] = 'Please enter valid firstName';
-            return res.send(errorResponse);
-        }
+        const schema = Joi.object().keys({
+            firstName: Joi.string().required(),
+            lastName: Joi.string().required(),
+            mobile: Joi.string()
+                .regex(/^[0-9]{10}$/)  // Assumes a 10-digit numeric mobile number
+                .message('Mobile number must be a 10-digit numeric value')
+                .required(),
+            country: Joi.string().required(),
+        });
 
-        if (!lastName) {
-            errorResponse['message'] = 'Please enter valid lastName';
-            return res.send(errorResponse);
-        }
+        const { error, value } = schema.validate({ firstName, lastName, mobile, country });
 
-        if (!mobile) {
-            errorResponse['message'] = 'Please enter valid Contact.';
-            return res.send(errorResponse);
-        }
-
-        if (!country) {
-            errorResponse['message'] = 'Please enter valid country.';
+        if (error) {
+            errorResponse['message'] = error.details[0].message;
             return res.send(errorResponse);
         }
 
@@ -73,16 +73,12 @@ exports.updateProfile = async (req, res) => {
             country: country,
         }
 
-        // console.log('userId', userId)
- 
-        if (req.files.file) {
-            let fileObj = req.files.file[0];
+
+        if (req.file) {
+            let fileObj = req.file;
             reqData.profileImage = fileObj.filename;
         }
-        // console.log('reqData', reqData)
-        // console.log('userId', userId)
 
-        // return false;
 
         User.findByIdAndUpdate(userId, reqData, { new: true })
             .then(data => {

@@ -18,7 +18,7 @@ const UTM = mongoose.model(
       type: String,
       required: true,
     },
-    name: {
+    utmname: {
       type: String,
       required: true,
     },

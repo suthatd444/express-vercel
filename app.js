@@ -13,7 +13,7 @@ const profileRouter = require('./routes/profile.routes')
 const shortLinksRouter = require('./routes/shortLinks.routes.js')
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5007
 // const otpRouter = require('./routes/otp')
 // const roleRouter = require('./routes/role');
 // const policyRouter = require('./routes/policy');
@@ -48,14 +48,18 @@ const swoptions = {
             }],
         servers: [
             {
-                url: "http://localhost:5007/api/v1",
+                url: process.env.SWAGGER_ENDPOINT,
             },
         ],
     },
     apis: ["./routes/*.js"],
 };
 const specs = swaggerJsdoc(swoptions);
-
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs)
+);
 
 app.use(cors());
 //For Devlopement only
@@ -64,18 +68,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.json())
-app.use(express.static('public'))
-app.use(
-    "/api/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(specs)
-);
 app.use('/api/v1', signupRouter)
 app.use('/api/v1', profileRouter)
 app.use('/api/v1', shortLinksRouter)
-app.get('/', (req, res) => {
-    res.send({ message: 'Welcome to divsly!' });
-  });
+
 
 
 app.listen(port, () => {
@@ -88,6 +84,17 @@ const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
+var options = {
+    user: "admin",
+    pass: "Deepak@1407",
+    useNewUrlParser: true,
+    auth: { authSource: 'admin' },
+    // useUnifiedTopology: true,
+    // useFindAndModify: true,
+    useUnifiedTopology: true,
+    //  useCreateIndex: true,
+    // poolSize:5000
+};
 
 mongoose.connect(process.env.MONGO_URI, { useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
     console.log("Connect to the database!");
@@ -95,5 +102,4 @@ mongoose.connect(process.env.MONGO_URI, { useUnifiedTopology: true, useNewUrlPar
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
-
-module.exports = app
+export default app;

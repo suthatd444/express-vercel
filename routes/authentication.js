@@ -18,7 +18,7 @@ const { signup, logout, forgotPassword, login, changePassword, otpAuth } = requi
  *               userName:
  *                 type: string
  *                 description: The username of the user.
- *                 example: test
+ *                 example: test11
  *               email:
  *                 type: string
  *                 format: email
@@ -27,11 +27,11 @@ const { signup, logout, forgotPassword, login, changePassword, otpAuth } = requi
  *               password:
  *                 type: string
  *                 description: The password of the user.
- *                 example: 1234
+ *                 example: Vijay@123
  *               repassword:
  *                 type: string
  *                 description: The password of the user.
- *                 example: 1234
+ *                 example: Vijay@123
  *     responses:
  *       200:
  *         description: Successful Register
@@ -70,7 +70,7 @@ router.post('/signUp', signup)
  *               password:
  *                 type: string
  *                 description: The password of the user.
- *                 example: 1234
+ *                 example: Vijay@123
  *            
  *     responses:
  *       200:
