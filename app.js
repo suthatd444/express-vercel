@@ -71,7 +71,11 @@ app.use(express.json())
 app.use('/api/v1', signupRouter)
 app.use('/api/v1', profileRouter)
 app.use('/api/v1', shortLinksRouter)
-
+app.get('/', (req, res) => {
+    res.json({
+      message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+    });
+  });
 
 
 app.listen(port, () => {
