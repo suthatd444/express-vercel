@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "swagger-autogen": "node ./docs/swagger.js",
-    "vercel-build":"echo hello"
+    "vercel-build":"echo hellos"
   },
   "repository": {
     "type": "git",
