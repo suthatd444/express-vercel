@@ -3,6 +3,9 @@ const shortLinks = require('../models/shortLinks.model');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
+const connectDB = require("../database/connectMongo");
+
+connectDB();
 const { successResponse, errorResponse } = require('../helpers/common.helper');
 
 const util = require("util");

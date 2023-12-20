@@ -2,6 +2,9 @@ const User = require('../models/user.model');
 const { successResponse, errorResponse } = require('../helpers/common.helper');
 const Joi = require('joi');
 
+const connectDB = require("../database/connectMongo");
+
+connectDB();
 const util = require("util");
 const multer = require("multer");
 const fs = require('fs');
