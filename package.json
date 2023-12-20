@@ -6,9 +6,8 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "swagger-autogen": "node ./docs/swagger.js",
-    "vercel-build":"echo hellos"
-  },
+    "swagger-autogen": "node ./docs/swagger.js"
+    },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/suthatd444/divsly.git"
