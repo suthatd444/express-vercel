@@ -1,12 +1,14 @@
-// const dotenv = require('dotenv');
-require('dotenv').config();
 const express = require("express"),
     bodyParser = require("body-parser"),
     swaggerJsdoc = require("swagger-jsdoc"),
     swaggerUi = require("swagger-ui-express");
 const app = express()
-const logger = require('morgan')
-const cors = require('cors')
+require('dotenv').config();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.json())
+// const logger = require('morgan')
+// const cors = require('cors')
 
 const signupRouter = require('./routes/authentication')
 const profileRouter = require('./routes/profile.routes')
@@ -58,13 +60,10 @@ app.use(
     swaggerUi.setup(specs)
 );
 
-app.use(cors());
+// app.use(cors());
 //For Devlopement only
-app.use(logger('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(logger('dev'));
 
-app.use(express.json())
 app.use('/api/v1', signupRouter)
 app.use('/api/v1', profileRouter)
 app.use('/api/v1', shortLinksRouter)
