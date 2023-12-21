@@ -1,14 +1,64 @@
-const express = require("express"),
-    bodyParser = require("body-parser"),
-    swaggerJsdoc = require("swagger-jsdoc"),
-    swaggerUi = require("swagger-ui-express");
+const express = require("express");
+    // bodyParser = require("body-parser"),
+    // swaggerJsdoc = require("swagger-jsdoc"),
+    // swaggerUi = require("swagger-ui-express");
 const app = express()
 require('dotenv').config();
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 app.use(express.json())
 // const logger = require('morgan')
 // const cors = require('cors')
+
+const signupRouter = require('./routes/authentication')
+const profileRouter = require('./routes/profile.routes')
+const shortLinksRouter = require('./routes/shortLinks.routes.js')
+// const otpRouter = require('./routes/otp')
+// const roleRouter = require('./routes/role');
+// const policyRouter = require('./routes/policy');
+// const companyRouter = require('./routes/company');
+// const userRouter = require('./routes/user.routes.js');
+// const agentSignupRouter = require('./routes/authentication.agent')
+// const htmlDataRouter = require('./routes/htmlData')
+// const policyCommissionRouter = require('./routes/policyCommission')
+// const swaggerDocument = require('./docs/swagger.json');
+
+// const swoptions = {
+//     definition: {
+//         openapi: "3.1.0",
+//         info: {
+//             title: "Divsly Express API with Swagger",
+//             version: "0.1.0",
+//             description:
+//                 "This is a simple CRUD API application made with Express and documented with Swagger",
+
+//         }, "components": {
+//             "securitySchemes": {
+//                 "bearerAuth": {
+//                     "type": "http",
+//                     "scheme": "bearer",
+//                     "bearerFormat": "JWT"
+//                 }
+//             }
+//         },
+//         "security": [
+//             {
+//                 "bearerAuth": []
+//             }],
+//         servers: [
+//             {
+//                 url: process.env.SWAGGER_ENDPOINT,
+//             },
+//         ],
+//     },
+//     apis: ["./routes/*.js"],
+// };
+// const specs = swaggerJsdoc(swoptions);
+// app.use(
+//     "/api-docs",
+//     swaggerUi.serve,
+//     swaggerUi.setup(specs)
+// );
 
 // app.use(cors());
 //For Devlopement only
@@ -23,92 +73,7 @@ app.get('/', (req, res) => {
     });
   });
 
-app.get("/api/v1/books/:id", async (req, res) => {
-  try {
-    const data = await BookModel.findById(req.params.id);
-
-    if (data) {
-      return res.status(200).json({
-        msg: "Ok",
-        data,
-      });
-    }
-
-    return res.status(404).json({
-      msg: "Not Found",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      msg: error.message,
-    });
-  }
-});
-
-app.post("/api/v1/books", async (req, res) => {
-  try {
-    const { name, author, price, description } = req.body;
-    const book = new BookModel({
-      name,
-      author,
-      price,
-      description,
-    });
-    const data = await book.save();
-    deleteKeys('Book')
-    return res.status(200).json({
-      msg: "Ok",
-      data,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      msg: error.message,
-    });
-  }
-});
-
-app.put("/api/v1/books/:id", async (req, res) => {
-  try {
-    const { name, author, price, description } = req.body;
-    const { id } = req.params;
-
-    const data = await BookModel.findByIdAndUpdate(
-      id,
-      {
-        name,
-        author,
-        price,
-        description,
-      },
-      { new: true }
-    );
-    deleteKeys('Book')
-    return res.status(200).json({
-      msg: "Ok",
-      data,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      msg: error.message,
-    });
-  }
-});
-
-app.delete("/api/v1/books/:id", async (req, res) => {
-  try {
-    await BookModel.findByIdAndDelete(req.params.id);
-    deleteKeys('Book')
-    return res.status(200).json({
-      msg: "Ok",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      msg: error.message,
-    });
-  }
-});
-
 const PORT = process.env.PORT;
-
 app.listen(PORT, () => {
-  console.log("Server is running on port " + PORT);
-});
+    console.log('Server Started on port ' + PORT);
+})
