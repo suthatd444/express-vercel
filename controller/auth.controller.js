@@ -7,8 +7,7 @@ const User = require('../models/user.model');
 const { successResponse, errorResponse } = require('../helpers/common.helper');
 
 // const Otp = require('../db/models/otp')
-const validator = require('validator')
-const axios = require('axios')
+
 const STATUS_CODE = require('../config/errors')
 
 const connectDB = require("../database/connectMongo");
