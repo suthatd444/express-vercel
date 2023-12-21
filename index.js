@@ -8,7 +8,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json())
 const cors = require('cors')
-
+app.options('*', cors());
+app.use(cors());
 const signupRouter = require('./routes/authentication')
 const profileRouter = require('./routes/profile.routes')
 const shortLinksRouter = require('./routes/shortLinks.routes.js')
@@ -47,6 +48,9 @@ const swoptions = {
             {
                 url: process.env.SWAGGER_ENDPOINT,
             },
+            {
+                url: 'https://express-vercel-three-smoky.vercel.app/api/v1',
+            },
         ],
     },
     apis: ["./routes/*.js"],
@@ -58,7 +62,6 @@ app.use(
     swaggerUi.setup(specs)
 );
 
-app.use(cors());
 //For Devlopement only
 // app.use(logger('dev'));
 
