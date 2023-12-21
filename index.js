@@ -4,16 +4,15 @@ const express = require("express"),
     swaggerUi = require("swagger-ui-express");
 const app = express()
 require('dotenv').config();
-// var corsoption = {
-//     origin: ["http://localhost:4200", "https://react-backend.miinii.me"], //origin from where you requesting
-//     credentials: true
-// }
+var corsoption = {
+    origin: ["http://localhost:4200", "https://react-backend.miinii.me"], //origin from where you requesting
+    credentials: true
+}
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json())
 const cors = require('cors')
-// app.options('*', cors());
-app.use(cors());
+app.use(cors(corsoption));
 const signupRouter = require('./routes/authentication')
 const profileRouter = require('./routes/profile.routes')
 const shortLinksRouter = require('./routes/shortLinks.routes.js')
