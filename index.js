@@ -8,8 +8,7 @@ var corsoption = {
     origin: ["http://localhost:4200", "https://react-backend.miinii.me"], //origin from where you requesting
     credentials: true
 }
-const CSS_URL =
-  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+const CSS_URL ="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json())
