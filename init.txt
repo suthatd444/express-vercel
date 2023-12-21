@@ -1,1 +1,0 @@
-This repo should contain all pharma app backend related information.
