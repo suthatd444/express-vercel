@@ -20,7 +20,6 @@ const shortLinksRouter = require('./routes/shortLinks.routes.js')
 // const agentSignupRouter = require('./routes/authentication.agent')
 // const htmlDataRouter = require('./routes/htmlData')
 // const policyCommissionRouter = require('./routes/policyCommission')
-const swaggerDocument = require('./docs/swagger.json');
 
 const swoptions = {
     definition: {
